@@ -1,0 +1,42 @@
+fin = open("paint.in","r")
+fout = open("paint.out","w")
+
+N = int(fin.readline())
+data = []
+
+begin = 0
+
+for i in range(N):
+     t = list(fin.readline().split())
+     x = int(t[0])
+
+     if t[1] == "L":
+         data.append([begin-x,begin])
+         begin = begin - x
+     else:
+         data.append([begin,begin+x])
+         begin = begin + x
+
+
+data.sort()
+print(data)
+basebegin = data[0][0]
+baseend = data[0][1]
+ans = 0
+
+for i in range(1,N):
+     #If the larger value of the starting point is greater than the smaller value of the ending point, the two line segments intersect
+     if max(basebegin,data[i][0]) < min(baseend, data[i][1]):
+         ans = ans + (min(baseend, data[i][1]) - max(basebegin,data[i][0]))
+
+         basebegin = min(data[i][1],baseend)
+         baseend = max(data[i][1],baseend)
+
+     else:
+         basebegin = max(data[i][0],basebegin)
+         baseend = max(data[i][1],baseend)
+
+
+
+fout.write(str(ans))
+fout.close()
