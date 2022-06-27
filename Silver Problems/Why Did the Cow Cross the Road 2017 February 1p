@@ -1,0 +1,41 @@
+[C,N] = list(map(int,input().split()))
+chicken = []
+for i in range(C):
+    t = int(input())
+    chicken.append(t)
+cow = []
+for i in range(N):
+    t = list(map(int,input().split()))
+    cow.append(t)
+
+chicken.sort()
+cow.sort(key = lambda k:k[1])
+ans = 0
+
+for e in chicken:
+    left = 0
+    right = len(cow)-1
+    while left <= right:
+        mid = (left+right)//2
+        if cow[mid][1] >= e:
+            right = mid -1
+        else:
+            left = mid + 1
+    pos = left
+    while pos <= len(cow)-1:
+        if cow[pos][0] <= e and cow[pos][1]>=e:
+            ans = ans+1
+            cow.pop(pos)
+            break
+        else:
+            pos = pos + 1
+    '''
+    for i in range(len(cow)):
+        if cow[i][0] <= e and cow[i][1] >=e:
+            cow.pop(i)
+            ans = ans+1
+            break
+    '''
+
+print(ans)
+        
