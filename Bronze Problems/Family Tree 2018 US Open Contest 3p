@@ -1,0 +1,78 @@
+fin = open("family.in","r")
+fout = open("family.out","w")
+
+[N,X,Y] = fin.readline().strip().split(" ")
+
+X_list = [X]
+Y_list = [Y]
+data = []
+
+for i in range(int(N)):
+    t1 = fin.readline().strip().split(" ")
+    data.append(t1)
+
+N = int(N)
+tx = X
+while 1:
+    flag = 0
+    for i in range(N):
+        if data[i][1] == tx:
+            X_list.append(data[i][0])
+            tx = data[i][0]
+            flag = 1
+            break
+    if flag == 0:
+        break
+
+ty = Y
+while 1:
+    flag = 0
+    for i in range(N):
+        if data[i][1] == ty:
+            Y_list.append(data[i][0])
+            ty = data[i][0]
+            flag = 1
+            break
+    if flag == 0:
+        break
+lenx = 0
+leny = 0
+for i in range(len(X_list)):
+    flag = True
+    for j in range(len(Y_list)):
+        if X_list[i] == Y_list[j]:
+            lenx = i
+            leny = j
+            flag = False
+    if flag == False:
+        break
+
+if lenx > leny:
+    lenx, leny = leny, lenx
+    X,Y = Y,X
+
+if lenx == 0 and leny ==0:
+    fout.write("NOT RELATED")
+elif lenx == 0 and leny >= 1:
+    if leny == 1:
+        fout.write(X+" is the mother of "+Y)
+    elif leny == 2:
+        fout.write(X+" is the grand-mother of "+Y)
+    else:
+        t=""
+        while leny >=3:
+            t=t+"great-"
+            leny=leny-1
+        t=t+"grand-mother"
+        fout.write(X+" is the "+t+" of "+Y)
+elif lenx == 1 and leny == 1:
+    fout.write("SIBLINGS")
+elif lenx == 1 and leny >= 2:
+    fout.write(X + " is the "+"great-"*(leny-2)+"aunt of "+Y)
+else:
+    fout.write("COUSINS")
+
+fout.close()
+    
+    
+    
