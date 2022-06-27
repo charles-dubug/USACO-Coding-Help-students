@@ -1,0 +1,22 @@
+fin = open("reststops.in","r")
+fout = open("reststops.out","w")
+
+[L, N, rF, rB] = list(map(int,fin.readline().split()))
+data = []
+
+for i in range(N):
+    t = list(map(int,fin.readline().split()))
+    data.append(t)
+
+ans = data[N-1][0] * data[N-1][1] *(rF-rB)
+basec = data[N-1][1]
+
+
+for i in range(N-2,-1,-1):
+    if data[i][1] > basec:
+        ans = ans + (data[i][1] - basec)*data[i][0]*(rF-rB)
+        basec = data[i][1]
+
+
+fout.write(str(ans))
+fout.close()
