@@ -1,0 +1,85 @@
+fin = open("rental.in", "r")
+fout = open("rental.out", "w")
+
+[N, M, R] = list(map(int, fin.readline().split()))
+cow_list = [] #The milk production of cows
+shop_list = [] #Store milk demand and milk price, milk demand in the front, milk price in the back.
+rent_list = [] #Cow rental price
+
+for i in range(N):
+    t = int(fin.readline())
+    cow_list.append(t)
+for i in range(M):
+    t = list(map(int, fin.readline().split()))
+    shop_list.append(t)
+for i in range(R):
+    t = int(fin.readline())
+    rent_list.append(t)
+
+cow_list.sort(reverse=True) #Sort by output from large to small
+shop_list.sort(key=lambda x: x[1],reverse=True) #Sort according to the price of milk from large to small
+rent_list.sort(reverse=True) #The rental price also needs to be from big to small
+
+# print(cow_list)
+# print(shop_list)
+
+shopvalue = [0]*N
+rentalvalue = [0]*N
+
+posj = 0
+for i in range(N):
+    # flag = False
+    for j in range(posj,M):
+        if cow_list[i] < shop_list[j][0]:
+            shopvalue[i] = shopvalue[i] + cow_list[i]*shop_list[j][1]
+            # flag = True
+            shop_list[j][0] = shop_list[j][0] - cow_list[i]
+            break
+        else:
+            shopvalue[i] = shopvalue[i] + shop_list[j][0] * shop_list[j][1]
+            cow_list[i] = cow_list[i] - shop_list[j][0]
+            shop_list[j][0] = 0
+            posj = j+1
+
+# print(shopvalue)
+
+i = N-1
+j = 0
+
+while i>=0 and j<R:
+    rentalvalue[i] = rent_list[j]
+    i = i - 1
+    j = j + 1
+# print(rentalvalue)
+
+
+ans = [0]*N
+
+for i in range(N):
+    ans[i] = max(rentalvalue[i],shopvalue[i])
+
+fout.write(str(sum(ans)))
+fin.close()
+fout.close()
+
+# cow_num = cow_list[N - 1]
+# shop_price = shop_list[M - 1][1]
+# shop_num = shop_list[M - 1][0]
+# rent_price = rent_list[R - 1]
+#
+# milk_list = []
+# for i in range(0, N):
+# if cow_num < shop_num:
+# cow_price = cow_num * shop_price
+# milk_list.append(cow_price)
+# shop_num = shop_num - cow_num
+# cow_list.pop(-1)
+# if len(cow_list) > 0:
+# cow_num = cow_list[-1]
+# else:
+# cow_num = 0
+# else:
+# cow_price = shop_num * shop_price
+# shop_list.pop(-1)
+# if len(shop_list) > 0:
+# shop_price =
