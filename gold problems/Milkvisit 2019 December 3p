@@ -1,0 +1,63 @@
+import queue
+[N,M]=list(map(int,input().split()))
+farmtype=list(input())
+graph=[[] for i in range(N)]
+loopsvalue = 0 #indicates which round
+
+for i in range(N-1):
+    [a,b] = list(map(int,input().split()))
+    graph[a-1].append(b-1)
+    graph[b-1].append(a-1)
+
+farmloop = [0]*N #represents the lenth value of each point traversal
+visit = [0]*N #represents the state of each point traversal
+
+def dfs(v):
+    global graph,farmloop,farmtype,visit,loopsvalue
+    if visit[v]==1:#If this point v has already been visited, then there is no need to visit further
+        return
+
+    visit[v] = 1
+    farmloop[v] = loopsvalue #Here is the round value of the node v loopsvalue
+
+    for e in graph[v]: #e is the adjacent node of node v
+        if visit[e]==0 and farmtype[e]==farmtype[v]: #Here is to judge whether it has not been visited and whether the farm type is consistent
+            dfs(e)
+
+def bfs(v):
+    global graph,farmloop,farmtype,visit,loopsvalue
+    if visit[v]==1:#If this point v has already been visited, then there is no need to visit further
+        return
+    visit[v] = 1
+    myq = queue.Queue()
+    myq.put(v)
+    while not myq.empty():
+        t = myq.get()
+        farmloop[t] = loopsvalue # here means that the round value of node v is loopsvalue
+        # print("Loops:",loopsvalue,"node:",t)
+        for e in graph[t]:
+            if visit[e]==0 and farmtype[e] == farmtype[v]:
+                myq.put(e)
+                visit[e]=1
+
+for i in range(N):
+    if visit[i] == 0:
+        loopsvalue += 1
+        #dfs(i)
+        bfs(i)
+
+# print(farmloop)
+
+for i in range(M):
+    [a, b, c] = list(input().split())
+    a=int(a)-1
+    b=int(b)-1
+    if farmloop[a]!=farmloop[b]: #The round value of the starting point and the ending point is not the same, then it means that the starting point and the ending point must pass through the two types of H&G
+        print("1",end="")
+    else: # Here the starting point and the ending point are of the same type, so it is necessary to judge whether the starting point and the friend's preference are consistent.
+        if c == farmtype[a]:
+            print("1",end="")
+        else:
+            print("0",end="")
+
+print()
