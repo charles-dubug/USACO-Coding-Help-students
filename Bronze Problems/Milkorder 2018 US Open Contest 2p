@@ -1,0 +1,69 @@
+fr = open("milkorder.in","r")
+fw = open("milkorder.out","w")
+
+[N,M,K] = list(map(int ,fr.readline().split()))
+
+order = [0]*101 #order[i] = j means position i has cow j
+d = [0]*101 #d[i] = j means cow i is at position j
+
+flag = 0 #flag = 0 means cow 1 is not in social relations, flag = 1 means in social relations
+
+rule = list(map(int, fr.readline().split())) #Store social hierarchy
+
+if 1 in rule:
+    flag = 1
+
+for i in range(K):
+    [c,p] = list(map(int, fr.readline().split()))
+    if c == 1:
+        fw.write(str(p))
+        fr.close()
+        fw.close()
+        exit(0)
+
+    else:
+        order[p] = c
+        d[c] = p
+
+
+if flag == 0: #Cow1 is not in the social hierarchy
+    pos = N
+
+    for i in range(M-1,-1,-1):
+        if d[rule[i]] == 0 : # Indicates the current rule[i] this cow has not been rowed
+            for j in range(pos,0,-1):
+                if order[j] == 0: #Indicates that the current position j has not been used yet
+                    order[j] = rule[i]
+                    d[rule[i]] = j
+                    break
+        else:
+            pos = d[rule[i]] - 1
+
+    for i in range(1,N+1):
+        if order[i] == 0:
+            fw.write(str(i))
+            fr.close()
+            fw.close()
+            exit(0)
+
+else: #Cow1 is in the social hierarchy sequence
+    pos = 1
+
+    for i in range(0,M):
+        if d[rule[i]] == 0 : # Indicates the current rule[i] this cow has not been rowed
+            for j in range(pos,N+1):
+                if order[j] == 0: #Indicates that the current position j has not been used yet
+                    order[j] = rule[i]
+                    d[rule[i]] = j
+                    break
+        else:
+            pos = d[rule[i]] + 1
+
+        if rule[i] == 1:
+            fw.write(str(d[rule[i]]))
+            fr.close()
+            fw.close()
+            exit(0)
+
+fr.close()
+fw.close()
