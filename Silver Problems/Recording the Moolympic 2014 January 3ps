@@ -1,0 +1,42 @@
+fin = open("recording.in","r")
+fout = open("recording.out","w")
+
+data = []
+
+N = int(fin.readline())
+for i in range(N):
+    t = list(map(int,fin.readline().split()))
+    data.append(t)
+
+data.sort(key = lambda k:k[1])
+
+
+cnta = 0
+cntb = 0
+valuea = 0
+valueb = 0
+
+for i in range(N):
+    if i == 0:
+        cnta = cnta + 1
+        valuea = data[i][1]
+    else:
+        if data[i][0] >= valuea and data[i][0] >= valueb:
+            if valuea > valueb:
+                cnta = cnta + 1
+                valuea = data[i][1]
+            else:
+                cntb = cntb + 1
+                valueb = data[i][1]
+        elif data[i][0] >= valuea:
+            cnta = cnta + 1
+            valuea = data[i][1]
+        elif data[i][0] >= valueb:
+            cntb = cntb +1
+            valueb = data[i][1]
+
+
+
+
+fout.write(str(cnta+cntb))
+fout.close()
