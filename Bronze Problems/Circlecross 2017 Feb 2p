@@ -1,0 +1,27 @@
+fr = open("circlecross.in","r")
+fw = open("circlecross.out","w")
+
+s = fr.readline()
+
+lst = ['A']*26
+
+for i in range(len(lst)):
+    lst[i] = chr(65+i) #turn an integer into a letter
+
+ans = 0
+for e in lst:
+    begin = s.find(e)
+    end = s.rfind(e)
+    st = {-100000}# set structure; element is unique
+    for i in range(begin,end+1):
+        if s[i] in st:
+            st.remove(s[i])
+        else:
+            st.add(s[i])
+    ans = ans + len(st) - 1
+
+ans = ans//2
+fw.write(str(ans))
+
+fw.close()
+fr.close()
