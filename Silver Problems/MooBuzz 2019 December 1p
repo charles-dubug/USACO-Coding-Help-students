@@ -1,0 +1,15 @@
+N = int(input())
+data = []
+num = 1
+
+def calculation(a):
+    pass
+
+
+while len(data)<N:
+        
+    if num % 3 != 0 and num % 5 != 0:
+        data.append(num)
+    num += 1
+
+print(data[N-1])
