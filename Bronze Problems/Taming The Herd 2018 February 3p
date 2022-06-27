@@ -1,0 +1,54 @@
+fr = open("taming.in","r")
+fw = open("taming.out","w")
+
+N = int(fr.readline())
+lst = list(map(int,fr.readline().split()))
+data = [-100]*N
+lst[0] = 0
+ans = 0
+ans0 = 0
+ans1 = 0
+# There are several rules
+# Traverse lst from right to left
+# If a -1 is encountered in lst, then directly assign it to the corresponding element of data
+# If a 0 is encountered in lst, then directly assign it to the corresponding element of data
+# If a value greater than 0 is encountered in lst, then the value needs to be assigned to the corresponding element of data, and the
+# The value to the left of the element value in data is decremented by 1 until 0, and then the index value of the corresponding lst also needs to be changed to the corresponding element
+
+# Finally, compare the two lists
+# If there are non-zero 0 elements in lst and data that are not equal, then output -1 directly
+# In addition, count the number of elements of 0 and the number of elements of -1 in data
+
+lstindex=N-1
+dataindex = N-1
+
+while lstindex >= 0:
+    if lst[lstindex] == 0 or lst[lstindex] == -1:
+        data[dataindex] = lst[lstindex]
+        lstindex = lstindex - 1
+        dataindex = dataindex-1
+    else:
+        data[dataindex] = lst[lstindex]
+        tmp = data[dataindex]
+        while tmp >= 0:
+            data[dataindex] = tmp
+            tmp = tmp - 1
+            dataindex = dataindex-1
+        lstindex = dataindex
+
+for i in range(N):
+    if lst[i] > 0 and data[i] > 0 and lst[i] != data[i]:
+        fw.write(str(-1))
+        fw.close()
+        fr.close()
+        exit(0)
+    elif data[i] == 0:
+        ans0 = ans0 + 1
+    elif data[i] == -1:
+        ans1 = ans1 + 1
+
+
+fw.write(str(ans0)+" "+str(ans0+ans1))
+
+fr.close()
+fw.close()
