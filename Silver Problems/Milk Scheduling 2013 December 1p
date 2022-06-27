@@ -1,0 +1,33 @@
+from queue import PriorityQueue
+
+class point():
+    def __init__(self,gallon): #Determine which member variables this custom type has
+        self.gallon = gallon
+
+    def __lt__(self, other): #Determine the comparison relationship of this custom type
+        return self.gallon > other.gallon #Here is what method to sort in.
+
+N = int(input())
+data = []
+
+for i in range(N):
+    t = list(map(int,input().split()))
+    data.append(t)
+
+data.sort(key=lambda k:k[1],reverse=True)
+# print(data)
+ans = 0
+pq = PriorityQueue()
+index = 0
+for i in range(data[0][1],0,-1): #this is traversing all possible times
+    while index <N and data[index][1] == i: #This is to put all possible milk production at the current moment i into the priority queue
+        pq.put(point(data[index][0])) #The milk output is added here
+        # print(i,data[index][0])
+        index += 1
+
+    if pq.empty()==False: #Every time i arrives, get the optimal value of the current priority queue from the priority queue.
+        # t = pq.get()
+        # print(t.gallon)
+        ans += pq.get().gallon #.get() function gets the point type object, so you need to pass .gallon to get the elements inside
+
+print(ans)
