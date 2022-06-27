@@ -1,0 +1,30 @@
+# x,y represents the coordinate point
+# c indicates how many elements have been accessed
+def func(x,y,c):
+    global status,K,ans
+
+    if x<= 0 or x >=6 or y<=0 or y>=6 or status[x][y] == 1:
+        return
+    else:
+        c = c + 1
+        if x==5 and y==5 and c==25-K:
+            ans = ans + 1
+        else:
+            status[x][y] = 1
+            func(x+1,y,c)
+            func(x-1,y,c)
+            func(x,y+1,c)
+            func(x,y-1,c)
+            status[x][y] = 0
+
+status =  [[0]*6 for i in range(6)] #status[i][j]==0 means that this point (i, j) is accessible, and 1 means inaccessible
+K = int(input())
+ans = 0
+
+for i in range(K):
+    [x,y] = list(map(int,input().split()))
+    status[x][y] = 1
+
+func(1,1,0)
+
+print(ans)
