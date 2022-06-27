@@ -1,0 +1,22 @@
+N = input()
+N_list = list(N)
+word = list(input())
+index_list = []
+
+for i in range(len(word)):
+    x = N_list.index(word[i])
+    index_list.append(x)
+
+
+ans = 1
+for i in range(len(index_list)-1):
+    left = index_list[i]
+    right = index_list[i+1]
+    if left < right:
+        ans = ans
+    elif left >= right:
+        ans += 1
+        
+
+print(ans)
+    
