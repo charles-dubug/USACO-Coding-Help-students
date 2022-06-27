@@ -1,0 +1,25 @@
+N = int(input())
+a = []
+
+c1 = [[0]*(2) for i in range(N+1)]
+c2 = [[0]*(N+1) for i in range(2)]
+
+for i in range(N):
+    t = list(map(int,input().split()))
+    a.append(t)
+
+ans1 = 0
+for i in range(N):
+    c1[i][0] = c1[i][1] = 0
+    for j in range(N):
+        c1[i][j%2]+=a[i][j]
+    ans1 += max(c1[i][0],c1[i][1])
+
+ans2 = 0
+for i in range(N):
+    c2[0][i] = c2[1][i] = 0
+    for j in range(N):
+        c2[j%2][i]+=a[j][i]
+    ans2 += max(c2[0][i],c2[1][i])
+
+print(max(ans1,ans2))
