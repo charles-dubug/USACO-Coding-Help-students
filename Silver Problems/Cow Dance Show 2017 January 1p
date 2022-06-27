@@ -1,0 +1,44 @@
+from queue import PriorityQueue
+
+[N, T] = list(map(int, input().split()))
+data = []
+
+for i in range(N):
+    t = int(input())
+    data.append(t)
+
+left = 1
+right = N
+
+
+def check(k):
+    global N, T, data
+    pq = PriorityQueue()
+
+    # The first is to put the first k elements into the queue
+    for i in range(k):
+        pq.put(data[i])
+
+    # Next is, every time an element is popped from the priority queue, then an element is added,
+    # For this supplementary element, we need to judge, if the value of this element is greater than T, then it is illegal k
+    # If the value of the popped element is less than T, then it is a valid k
+
+    for i in range(k, N):
+        e = pq.get()
+        if e + data[i] <= T:
+            pq.put(e + data[i]) # The added element can be added to the queue if the value is less than T
+        else: # This means that the total time is exceeded.
+            return False
+
+    return True # If the function can go here, it means that it is a legal k value.
+
+
+while left <= right:
+    mid = (left + right) // 2
+
+    if check(mid) == True:
+        right = mid - 1 # This means that the mid value meets the requirements, then the mid needs to be further reduced
+    else:
+        left = mid + 1 # This means that the mid value does not meet the requirements, then the mid needs to be increased
+
+print(left)
