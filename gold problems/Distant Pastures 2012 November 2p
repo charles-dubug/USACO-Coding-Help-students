@@ -1,0 +1,96 @@
+[N,A,B] = list(map(int,input().split()))
+graph = [[0]*(N+1) for i in range(N+1)]
+
+for i in range(1,N+1):
+    t = list(input())
+    for j in range(1,N+1):
+        if t[j-1] == "(":
+            graph[i][j] = 0
+        else:
+            graph[i][j] = 1
+
+#
+# for i in range(1,N+1):
+# for j in range(1,N+1):
+# print(graph[i][j],end=" ")
+# print()
+
+ans = 0
+
+#Because the points here are all two-dimensional points, the x and y here are the coordinates of two-dimensional points
+def dijkstra(x,y):
+    global graph
+    INF = 10000
+    dist = [[INF]*(N+1) for i in range(N+1)]
+    visit = [[0] *(N+1) for i in range(N+1)]
+    dx = [0,0,-1,1]
+    dy = [-1,1,0,0]
+    visit[x][y] = 1
+
+    for i in range(4):
+        xx = x + dx[i]
+        yy = y + dy[i]
+        if xx >= 1 and xx <= N and yy >= 1 and yy <= N:
+            if graph[xx][yy] == graph[x][y]:
+                dist[xx][yy] = A
+            else:
+                dist[xx][yy] = B
+
+    while True:
+        flag = 1
+        for i in range(1, N + 1):
+            for j in range(1,N+1):
+                if visit[i][j] == 0:
+                    flag = 0
+                    break
+        if flag == 1:
+            break
+
+        nextvx = -1
+        nextvy = -1
+        basevalue = INF
+        for i in range(1, N + 1):
+            for j in range(1,N+1):
+                if i >= 1 and i <= N and j >= 1 and j <= N and visit[i][j] == 0 and dist[i][j] < basevalue:
+                    nextvx = i
+                    nextvy = j
+                    basevalue = dist[i][j]
+        # print(visit)
+        # print(x,y,nextvx,nextvy)
+        visit[nextvx][nextvy] = 1 # make the next node visited
+
+        #Here is to build a relaxation algorithm for adjacent nodes based on the next node nextvx, nextvy
+        for i in range(4):
+            xx = nextvx + dx[i]
+            yy = nextvy + dy[i]
+            if xx>=1 and xx<=N and yy>=1 and yy<=N and visit[xx][yy] == 0:
+                if graph[nextvx][nextvy] == graph[xx][yy]:
+                    if dist[nextvx][nextvy] + A < dist[xx][yy]:
+                        dist[xx][yy] = dist[nextvx][nextvy] + A
+                else:
+                    if dist[nextvx][nextvy] + B < dist[xx][yy]:
+                        dist[xx][yy] = dist[nextvx][nextvy] + B
+
+        # for i in range(1,N+1):
+        # for j in range(1,N+1):
+        # print(dist[i][j],end=" ")
+        # print()
+        # print()
+        # print()
+
+    #The following is used to calculate the maximum distance from the current node x, y to all other nodes
+    ret = 0
+    for i in range(1,N+1):
+        for j in range(1,N+1):
+            if i==x and j==y:
+                continue
+            else:
+                ret = max(ret,dist[i][j])
+    return ret
+
+#Based on each node, perform a dijkstra shortest distance algorithm, and then take the maximum distance value
+for i in range(1,N+1):
+    for j in range(1,N+1):
+        ans = max(ans,dijkstra(i,j))
+
+print(ans)
