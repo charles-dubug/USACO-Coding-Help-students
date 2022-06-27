@@ -1,0 +1,40 @@
+[n,k] = list(map(int,input().split()))
+#NUMSIZE = (n+1)
+#pos = [0]*NUMSIZE
+pos=[i for i in range(n+1)]
+#fa = [0]*NUMSIZE
+fa=[i for i in range(n+1)]
+st = [{i} for i in range(n+1)]
+
+for i in range(1,n+1):
+    pos[i] = fa[i] = i
+    #st[i].add(i)
+
+for i in range(k):
+    #[a, b] = list(map(int, input().split()))
+    [a,b]=input().split()
+    a=int(a)
+    b=int(b)
+    pos[a],pos[b] = pos[b],pos[a]
+    st[pos[a]].add(a)
+    st[pos[b]].add(b)
+
+def findfa(father):
+    global fa
+    while fa[father] != father:
+        father = fa[father]
+    return fa[father]
+
+for i in range(1,n+1):
+    x = findfa(i)
+    y = findfa(pos[i])
+    if x!=y:
+        if len(st[x]) < len(st[y]):
+            st[x],st[y] = st[y],st[x]
+        for e in st[y]:
+            st[x].add(e)
+        st[y].clear()
+        fa[y]=x
+
+for i in range(1,n+1):
+    print(len(st[findfa(i)]))
