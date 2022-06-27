@@ -1,0 +1,21 @@
+[s,N] = list(input().split())
+N = int(N)
+
+def f(ss):
+     globals
+     if ss <= len(s):
+         print(s[ss-1])
+         return
+
+     #Based on the reference string, to find an x in 2^x, so that the value of 2^x is greater than ss,
+     i = len(s)
+     while i < ss:
+         i *= 2
+
+     # That is to say, ss must be to the right of the middle value of i
+     if ss == i/2+1: #At this time, it must be to the left of the middle value of i, which is the last character of the first half
+         f(i//2)
+     else:
+         f(ss-i//2-1) #That is to say, at this time, the middle value is subtracted from the right half.
+
+f(N)
