@@ -1,0 +1,29 @@
+"""
+2017 Jan 3
+"""
+fin = open("cowtip.in","r")
+fout = open("cowtip.out","w")
+
+N = int(fin.readline())
+num_list = [[0]*N for i in range(N)]  # N*N 的二维数组
+for i in range(N):
+    A = fin.readline()
+    for j in range(N):
+        num_list[i][j] = int(A[j])
+ans = 0
+
+for i in range(N-1,-1,-1):
+    for j in range(N-1,-1,-1):
+
+        if num_list[i][j] == 1:
+            ans += 1
+
+            for ii in range(0,i+1):
+                for jj in range(0,j+1):
+                    num_list[ii][jj] = (num_list[ii][jj] + 1)%2
+
+print(ans)
+fout.write(str(ans))
+fout.close()
+        
+        
