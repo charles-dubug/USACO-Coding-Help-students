@@ -1,0 +1,28 @@
+N = int(input())
+cow = list(map(int,input().split()))
+odd_list = []
+even_list=[]
+for i in range(N):
+    if cow[i]%2 == 0:
+        even_list.append(cow[i])
+    else:
+        odd_list.append(cow[i])
+
+
+if len(odd_list) > len(even_list):
+    ans = len(even_list)*2
+    x = len(odd_list) - len(even_list)
+    if x%3 == 1:
+        ans += (x//3)*2-1
+    elif x%3 == 2:
+        ans += (x//3)*2+1
+    else:
+        ans += (x//3)*2
+elif len(odd_list) == len(even_list):
+    a = len(odd_list)
+    ans = a*2
+else:
+    ans = len(odd_list)*2+1
+        
+
+print(ans)
