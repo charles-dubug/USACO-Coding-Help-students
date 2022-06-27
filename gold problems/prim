@@ -1,0 +1,109 @@
+#1:A,
+# 2:B,
+#3:C,
+#4:D,
+# 5: E,
+# 6: F,
+# 7:G,
+# 8:H,
+# 9: I
+
+# A:(B,3),(F,6),(G,4)
+# B:(A,3),(C,1),(H,7)
+# C:(B,1),(D,8),(F,1),(G,2),(I,9)
+# D:(C,8),(E,5),(H,3)
+# E:(D,5),(I,4)
+# F:(A,6),(C,1),(H,2)
+# G:(A,4),(C,2),(H,4)
+# H:(B,7),(D,3),(F,2),(G,4),(I,4)
+# I:(C,9),(H,4),(E,4)
+g = [[] for i in range(10)]
+
+g[9].append([3,9])
+g[9].append([8,4])
+g[9].append([5,4])
+
+g[8].append([2,7])
+g[8].append([4,3])
+g[8].append([6,2])
+g[8].append([7,4])
+g[8].append([9,4])
+
+g[7].append([1,4])
+g[7].append([3,2])
+g[7].append([8,4])
+
+g[6].append([1,6])
+g[6].append([3,1])
+g[6].append([8,2])
+
+g[5].append([4,5])
+g[5].append([9,4])
+
+g[4].append([3,8])
+g[4].append([5,5])
+g[4].append([8,3])
+
+g[3].append([2,1])
+g[3].append([4,8])
+g[3].append([6,1])
+g[3].append([7,2])
+g[3].append([9,9])
+
+g[1].append([2,3])
+g[1].append([6,6])
+g[1].append([7,4])
+
+g[2].append([1,3])
+g[2].append([3,1])
+g[2].append([8,7])
+
+print(g)
+
+INF = 1000000000000000000000000000000000000
+visit = [0 for i in range(10)] #Determine whether it has been visited
+dist = [INF for i in range(10)]
+parent = [-1 for i in range(10)] #The parent node of all points is -1
+def prim(v):
+    global g,visit,dist
+    ans = 0 #here is the sum of the saved distances
+    visit[v] = 1
+    #The first time is based on the adjacent nodes of the starting point v
+    for e in g[v]:
+        dist[e[0]] = e[1]
+
+    while True:
+        # Determine whether all current points have been visited
+        flag = True
+
+        #As long as there is one node that has not been visited, the loop will continue
+        for i in range(1,10):
+            if visit[i] == 0:
+                flag = False
+                break
+
+        #If all points have been visited, then this while loop will exit
+        if flag == True:
+            break
+
+        #The next step is to find the minimum distance value from all unvisited points as the next point to be visited
+        basedist=INF
+        nextv = -1
+        for i in range(1,10):
+            if visit[i]==0 and dist[i] <= basedist: #The point with the smallest distance value among all the points that have not been visited
+                basedist = dist[i]
+                nextv = i
+        # print(nextv)
+        visit[nextv] = 1 #Set the next point nextv as visited
+        print(nextv, dist[nextv])
+        for e in g[nextv]:
+            # print("nextv=",nextv,"e=",e)
+            if visit[e[0]] == 0:
+                #dist[e[0]] = min(dist[e[0]], dist[nextv] + e[1]) #relaxation principle
+                if dist[nextv] + e[1] < dist[e[0]]: #satisfy the relaxation principle
+                    parent[e[0]] = nextv #Update the parent node
+                    dist[e[0]] = dist[nextv] + e[1]
+    return ans
+
+prim(1)
+print(dist)
