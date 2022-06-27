@@ -1,0 +1,45 @@
+fin = open("badmilk.in","r")
+fout = open("badmilk.out","w")
+
+N,M,D,S = map(int,fin.readline().strip().split())
+ans1 = 0
+sick_list = []
+milk_list = []
+
+for i in range(D):
+    milk = list(fin.readline().strip().split(" "))
+    milk_list.append(milk)
+for i in range(S):
+    sick = list(fin.readline().strip().split(" "))
+    sick_list.append(sick)
+
+ans_list = []
+for i in range(M):
+    ans_list = []
+    num = 0
+    ans = 0
+    for j in range(len(sick_list)):
+        x1 = int(sick_list[j][0])
+        y1 = int(sick_list[j][1])
+        for k in range(len(milk_list)):
+            x = int(milk_list[k][0])
+            y = int(milk_list[k][1])
+            z = int(milk_list[k][2])
+            if x == x1 and y1 > z and int(y) == int((i+1)):
+                num += 1
+    if num >= len(sick_list):
+        for x in range(len(milk_list)):
+            if int(milk_list[x][1]) == i+1:
+                ans_list.append(int(milk_list[x][0]))
+        print(ans_list)
+        ans_list = set(ans_list)
+        ans = len(ans_list)
+        print(i)
+        print(ans)
+        if ans >= N:
+            ans = N
+        ans1 = max(ans,ans1)
+        
+                
+fout.write(str(ans1))
+fout.close()
