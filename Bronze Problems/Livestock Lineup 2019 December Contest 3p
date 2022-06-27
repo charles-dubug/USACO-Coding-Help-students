@@ -1,0 +1,21 @@
+N = int(input())
+cow = list(map(int,input().split()))
+barn = list(map(int,input().split()))
+
+cow.sort()
+barn.sort()
+ans_list = []
+for i in range(len(cow)-1,-1,-1):
+    count = 0
+    for j in range(len(barn)-1,-1,-1):
+        if cow[i]<=barn[j]:
+            count+=1
+    ans_list.append(count-(N-1-i))
+
+ans = 1 
+for i in range(len(ans_list)-1):
+    if ans_list[i] == 0:
+        ans_list[i] = 1
+    ans = ans * ans_list[i]
+
+print(ans)
