@@ -1,0 +1,44 @@
+fr = open("mooomoo.in","r")
+fw = open("mooomoo.out","w")
+[N,B] = list(map(int,fr.readline().split()))
+
+breed = []
+for i in range(B):
+     t = int(fr.readline())
+     breed.append(t)
+
+breed.insert(0,0)
+data = []
+for i in range(N):
+     t = int(fr.readline())
+     data.append(t)
+
+d = [0]*N #Used to calculate the sound value contributed by each position individually
+d[0] = data[0]
+maxvoice = 0
+#The following is used to calculate the sound value of each individual contribution
+for i in range(1,N):
+     if data[i-1]!=0:
+         d[i] = data[i] - (data[i-1]-1)
+     else:
+         d[i] = data[i]
+     maxvoice = max(maxvoice,d[i])
+
+infinity = 1000000000
+dp = [infinity]*(maxvoice+1)
+dp[0] = 0
+
+for i in range(1,B+1):
+     for j in range(breed[i],maxvoice+1):
+         dp[j] = min(dp[j],1+dp[j-breed[i]])
+
+ans = 0
+for i in range(N):
+     if d[i] != 0:
+         if dp[d[i]] >= infinity:
+             fw.write(str(-1))
+             exit(0)
+         ans = ans + dp[d[i]]
+
+fw.write(str(ans))
+fw.close()
