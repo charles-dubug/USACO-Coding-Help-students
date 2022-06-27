@@ -1,0 +1,45 @@
+[N,M,X] = list(map(int,input().split()))
+graph = [[] for i in range(N+1)] #In the graph, although it is composed of points and edges, when constructing the graph, it needs to be constructed according to the points, and the edges are auxiliary
+
+for i in range(M):
+    [I,J,L,C] = list(map(int,input().split()))
+    graph[I].append([J,L,C])
+    graph[J].append([I,L,C])
+# print(graph)
+INF = 10000000000000000000000000
+visit = [0 for i in range(N+1)] #represents the visit status of each point
+dist = [INF for i in range(N+1)] #represents the actual value of each point
+LC = [[INF,INF] for i in range(N+1)]
+
+#Here node 1 is the starting point, and it is necessary to calculate the distance from node 1 to other nodes, so it is necessary to first calculate the distance of the adjacent node information of node 1
+visit[1] = 1
+for e in graph[1]: #e contains 3 pieces of information, namely node, delay and capacity
+    dist[e[0]] = e[1] + X//e[2] #The formula is L + X/C
+    LC[e[0]] = [e[1],e[2]]
+    # print(dist)
+
+while True:
+    flag = 1
+    for i in range(1,N+1):
+        if visit[i] == 0:
+            flag = 0
+            break
+    if flag == 1:
+        break
+
+    nextv = -1
+    basevalue = INF
+    for i in range(1,N+1):
+        if visit[i] == 0 and dist[i] <= basevalue:#The node that has not been visited and the node with the smallest distance value is used as the next vertex to be visited
+           nextv = i
+           basevalue = dist[i]
+
+    visit[nextv] = 1 #Set the next node as visited
+    for e in graph[nextv]:
+        # print(e, dist)
+        # print("nextv:",nextv)
+        if visit[e[0]] == 0 and ((LC[nextv][0] + e[1]) + X // min(LC[nextv][1], e[2])) < dist[ e[0]]:
+            dist[e[0]] = (LC[nextv][0] + e[1]) + X // min(LC[nextv][1], e[2]) #Update the distance value
+            LC[e[0]] = [LC[nextv][0] + e[1], min(LC[nextv][1], e[2])]
+
+print(dist[N])
