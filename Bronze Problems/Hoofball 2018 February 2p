@@ -1,0 +1,35 @@
+fr = open("hoofball.in","r")
+fw = open("hoofball.out","w")
+
+ans = 0
+N = int(fr.readline())
+lst = list(map(int,fr.readline().split()))
+lst.sort()
+
+
+targetcnt = [0]*1001 #targetnt[i] = j indicates that position i is targeted for j times
+target = [0]*1001 #target[i] = j indicates that the target of position i is position j
+
+target[lst[0]] = lst[1]
+targetcnt[lst[1]] = 1
+target[lst[N-1]] = lst[N-2]
+targetcnt[lst[N-2]] = 1
+
+for i in range(1,N-1):
+     if lst[i]-lst[i-1] <= lst[i+1]-lst[i]:
+         target[lst[i]] =lst[i-1]
+         targetcnt[lst[i-1]] = targetcnt[lst[i-1]] + 1
+     else:
+         target[lst[i]] = lst[i+1]
+         targetcnt[lst[i+1]] = targetcnt[lst[i+1]] + 1
+
+for i in range(N):
+     if targetcnt[lst[i]] == 0:
+         ans = ans + 1
+     else:
+         if i+1 < N and targetcnt[lst[i]] == 1 and targetcnt[lst[i+1]] == 1 and target[lst[i]] == lst[i+1] and target[lst [i+1]] == lst[i]:
+             ans = ans + 1
+
+fw.write(str(ans))
+fr.close()
+fw.close()
