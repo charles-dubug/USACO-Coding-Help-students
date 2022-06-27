@@ -1,0 +1,37 @@
+from itertools import permutations
+
+fr = open("lineup.in","r")
+fw = open("lineup.out","w")
+
+lst = ["Bessie", "Buttercup", "Belinda", "Beatrice", "Bella", "Blue", "Betsy", "Sue"]
+rule = [] 
+
+N = int(fr.readline())
+
+
+def findstr(lst, S):
+    for i in range(len(lst)):
+        if lst[i] == S:
+            return i
+    return -1
+
+for i in range(N):
+    t = list(fr.readline().split())  
+    tlst = [t[0], t[5]]  # X must be milked beside Y
+    rule.append(tlst)
+
+lst.sort()
+for t in permutations(lst,8):  #Using the full arrangement formula that comes with python3.0, the full arrangement can be performed in lexicographical order.
+    flag = 0
+    for i in range(N):
+        if abs(findstr(t,rule[i][0]) - findstr(t,rule[i][1])) !=1:
+            flag = 1
+            break
+
+    if flag == 0:
+        for i in range(8):
+            #print(t[i])
+            fw.write(t[i]+"\n")
+        break
+
+fw.close()
