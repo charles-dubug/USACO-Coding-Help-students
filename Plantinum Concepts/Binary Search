@@ -1,0 +1,40 @@
+from bisect import bisect_left,bisect_right#python already have binary search in its library
+def main():
+    #[2,3,3,4,6,7,8,9]
+    #[        6,7,8,9]
+    #[        6,7    ] 
+    #[          7    ]
+    print("Binary Search")
+    #i = bin_search([2,3,3,4,6,7,8,9],7)#find first exist 7  [T,T,T,T,T,F,F,F]
+
+#find the first false value(depend on what first false value you want)
+def bisect_left(arr: list, x,lo=0,high=None) -> int:
+    hi = hi if hi is not None else len(arr)
+    assert 0<=lo<=hi<=len(arr)
+    while lo<hi:
+        mid = lo + (hi-lo)//2
+        if arr[mid] < x:
+            lo = mid + 1
+        else:
+            hi = mid
+    return lo
+
+def bisect_right(arr: list, x,lo=0,high=None) -> int:
+    hi = hi if hi is not None else len(arr)
+    assert 0<=lo<=hi<=len(arr)
+    while lo<hi:
+        mid = lo + (hi-lo)//2
+        if arr[mid] <= x:
+            lo = mid + 1
+        else:
+            hi = mid
+    return lo
+
+def bisect_index_of(arr:list,x) -> int:
+    i = bisect_left(arr,x)
+    if i != len(arr) and arr[i] == x:
+        return i
+    raise ValueError
+
+if __name__ == '__main__':
+    main()
